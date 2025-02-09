@@ -1,157 +1,165 @@
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Login Avançado</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <audio id="bgMusic" loop autoplay>
-        <source src="07. super mario bros - overworld.mp3" type="audio/mpeg">
-    </audio>
+  <!-- Blue Sky Background (Clouds Removed) -->
+  <div class="military-bg"></div>
 
-    <button id="musicToggle" class="music-toggle">
-        <i class="fas fa-volume-up"></i>
-    </button>
-
-    <div class="mario-bg">
-        <div class="sun"></div>
-        <div class="mountain" style="left: 10%;"></div>
-        <div class="mountain" style="left: 30%;"></div>
-        <div class="mountain" style="left: 50%;"></div>
-        <div class="mountain" style="left: 70%;"></div>
-        <div class="mountain" style="left: 90%;"></div>
-        <div class="ground"></div>
-        
-        <!-- Mystery Blocks -->
-        <div class="mystery-block" style="top: 40%; left: 20%"></div>
-        <div class="mystery-block" style="top: 30%; left: 50%"></div>
-        <div class="mystery-block" style="top: 45%; left: 80%"></div>
+  <div class="container">
+    <!-- Login Panel -->
+    <div class="login-panel" id="loginPanel">
+      <h2>Login</h2>
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" placeholder="Nome de usuário" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Senha" required>
+          <i class="fas fa-eye" id="togglePassword"></i>
+        </div>
+        <div class="options">
+          <label>
+            <input type="checkbox" id="remember"> Lembrar-me
+          </label>
+          <a href="#" onclick="togglePanels('forgotPassword'); return false;">Esqueceu a senha?</a>
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Entrar</span>
+        </button>
+      </form>
+      <p class="register-link">
+        Não tem uma conta? <a href="#" onclick="togglePanels('register'); return false;">Registre-se</a>
+      </p>
     </div>
 
-    <div class="container">
-        <!-- Login Panel -->
-        <div class="login-panel" id="loginPanel">
-            <h2>Login Site Do Alves</h2>
-            <form id="loginForm" onsubmit="return handleLogin(event)">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Nome de usuário" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Senha" required>
-                    <i class="fas fa-eye" id="togglePassword"></i>
-                </div>
-                <div class="options">
-                    <label>
-                        <input type="checkbox" id="remember"> Lembrar-me
-                    </label>
-                    <a href="#" onclick="togglePanels('forgotPassword'); return false;">Esqueceu a senha?</a>
-                </div>
-                <button type="submit" class="login-btn">
-                    <span>Entrar</span>
-                </button>
-            </form>
-            <p class="register-link">
-                Não tem uma conta? <a href="#" onclick="togglePanels('register'); return false;">Registre-se</a>
-            </p>
+    <!-- Register Panel -->
+    <div class="login-panel" id="registerPanel" style="display: none;">
+      <h2>Criar Conta</h2>
+      <form id="registerForm" onsubmit="return handleRegister(event)">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="regUsername" placeholder="Nome de usuário" required>
         </div>
-
-        <!-- Register Panel -->
-        <div class="login-panel" id="registerPanel" style="display: none;">
-            <h2>Criar Conta</h2>
-            <form id="registerForm" onsubmit="return handleRegister(event)">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="regUsername" placeholder="Nome de usuário" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="regEmail" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="regPassword" placeholder="Senha" required>
-                    <i class="fas fa-eye" id="toggleRegPassword"></i>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="regConfirmPassword" placeholder="Confirmar Senha" required>
-                    <i class="fas fa-eye" id="toggleRegConfirmPassword"></i>
-                </div>
-                <button type="submit" class="login-btn">
-                    <span>Registrar</span>
-                </button>
-            </form>
-            <p class="register-link">
-                Já tem uma conta? <a href="#" onclick="togglePanels('login'); return false;">Faça login</a>
-            </p>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="regEmail" placeholder="Email" required>
         </div>
-
-        <!-- Forgot Password Panel -->
-        <div class="login-panel" id="forgotPasswordPanel" style="display: none;">
-            <h2>Recuperar Senha</h2>
-            <form id="forgotPasswordForm" onsubmit="return handleForgotPassword(event)">
-                <div class="input-group">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="resetEmail" placeholder="Email cadastrado" required>
-                </div>
-                <button type="submit" class="login-btn">
-                    <span>Enviar</span>
-                </button>
-            </form>
-            <p class="register-link">
-                <a href="#" onclick="togglePanels('login'); return false;">Voltar ao login</a>
-            </p>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="regConfirmEmail" placeholder="Confirmar Email" required>
         </div>
-
-        <!-- Reset Code Panel -->
-        <div class="login-panel" id="resetCodePanel" style="display: none;">
-            <h2>Digite o Código</h2>
-            <p style="color: #fff; text-align: center; margin-bottom: 20px;">
-                Digite o código enviado ao seu email
-            </p>
-            <form id="resetCodeForm" onsubmit="return handleResetCode(event)">
-                <div class="input-group">
-                    <i class="fas fa-key"></i>
-                    <input type="text" id="resetCode" placeholder="Código de verificação" required pattern="[0-9]{6}" maxlength="6">
-                </div>
-                <button type="submit" class="login-btn">
-                    <span>Verificar</span>
-                </button>
-            </form>
-            <p class="register-link">
-                <a href="#" onclick="togglePanels('forgotPassword'); return false;">Reenviar código</a>
-            </p>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="regPassword" placeholder="Senha" required>
+          <i class="fas fa-eye" id="toggleRegPassword"></i>
         </div>
-
-        <!-- New Password Panel -->
-        <div class="login-panel" id="newPasswordPanel" style="display: none;">
-            <h2>Nova Senha</h2>
-            <form id="newPasswordForm" onsubmit="return handleNewPassword(event)">
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="newPassword" placeholder="Nova senha" required>
-                    <i class="fas fa-eye" onclick="togglePasswordVisibility(document.getElementById('newPassword'), this)"></i>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="confirmNewPassword" placeholder="Confirmar nova senha" required>
-                    <i class="fas fa-eye" onclick="togglePasswordVisibility(document.getElementById('confirmNewPassword'), this)"></i>
-                </div>
-                <button type="submit" class="login-btn">
-                    <span>Alterar Senha</span>
-                </button>
-            </form>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="regConfirmPassword" placeholder="Confirmar Senha" required>
+          <i class="fas fa-eye" id="toggleRegConfirmPassword"></i>
         </div>
+        <button type="submit" class="login-btn">
+          <span>Registrar</span>
+        </button>
+      </form>
+      <button type="button" class="login-btn" style="margin-top: 15px;" onclick="showFonteMessage()">
+        <span>A Fonte Aqui</span>
+      </button>
+      <p class="register-link">
+        Já tem uma conta? <a href="#" onclick="togglePanels('login'); return false;">Faça login</a>
+      </p>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Email Confirmation Panel (New Panel) -->
+    <div class="login-panel" id="emailConfirmPanel" style="display: none;">
+      <h2>Confirme o Email</h2>
+      <p style="color: #fff; text-align: center; margin-bottom: 20px;">
+        Digite o código enviado para o seu email para confirmar sua conta.
+      </p>
+      <form id="emailConfirmForm" onsubmit="return handleEmailConfirm(event)">
+        <input type="hidden" id="pendingEmail" value="">
+        <div class="input-group">
+          <i class="fas fa-key"></i>
+          <input type="text" id="emailConfirmCode" placeholder="Código de confirmação" required pattern="[0-9]{6}" maxlength="6">
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Confirmar Email</span>
+        </button>
+      </form>
+      <p class="register-link">
+        <a href="#" onclick="handleCorrigirDados(event); return false;">Corrigir dados</a>
+      </p>
+    </div>
+
+    <!-- Forgot Password Panel -->
+    <div class="login-panel" id="forgotPasswordPanel" style="display: none;">
+      <h2>Recuperar Senha</h2>
+      <form id="forgotPasswordForm" onsubmit="return handleForgotPassword(event)">
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="resetEmail" placeholder="Email cadastrado" required>
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Enviar</span>
+        </button>
+      </form>
+      <p class="register-link">
+        <a href="#" onclick="togglePanels('login'); return false;">Voltar ao login</a>
+      </p>
+    </div>
+
+    <!-- Reset Code Panel -->
+    <div class="login-panel" id="resetCodePanel" style="display: none;">
+      <h2>Digite o Código</h2>
+      <p style="color: #fff; text-align: center; margin-bottom: 20px;">
+        Digite o código enviado ao seu email
+      </p>
+      <form id="resetCodeForm" onsubmit="return handleResetCode(event)">
+        <div class="input-group">
+          <i class="fas fa-key"></i>
+          <input type="text" id="resetCode" placeholder="Código de verificação" required pattern="[0-9]{6}" maxlength="6">
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Verificar</span>
+        </button>
+      </form>
+      <p class="register-link">
+        <a href="#" onclick="togglePanels('forgotPassword'); return false;">Reenviar código</a>
+      </p>
+    </div>
+
+    <!-- New Password Panel -->
+    <div class="login-panel" id="newPasswordPanel" style="display: none;">
+      <h2>Nova Senha</h2>
+      <form id="newPasswordForm" onsubmit="return handleNewPassword(event)">
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="newPassword" placeholder="Nova senha" required>
+          <i class="fas fa-eye" onclick="togglePasswordVisibility(document.getElementById('newPassword'), this)"></i>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="confirmNewPassword" placeholder="Confirmar nova senha" required>
+          <i class="fas fa-eye" onclick="togglePasswordVisibility(document.getElementById('confirmNewPassword'), this)"></i>
+        </div>
+        <button type="submit" class="login-btn">
+          <span>Alterar Senha</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
