@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   };
 
-  // Updated register handler with email confirmation step and avatar selection
+  // Updated register handler without avatar selection
   const handleRegister = function (event) {
     event.preventDefault();
 
@@ -169,7 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmEmail = document.getElementById("regConfirmEmail")?.value.trim();
     const password = document.getElementById("regPassword")?.value;
     const confirmPassword = document.getElementById("regConfirmPassword")?.value;
-    const avatar = document.getElementById("selectedAvatar")?.value; // New: get selected avatar
 
     if (!username || !email || !confirmEmail || !password || !confirmPassword) {
       showError("Por favor, preencha todos os campos");
@@ -226,7 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
             username,
             email,
             password,
-            avatar, // Store avatar choice with registration data
             code: confirmationCode,
             expires: Date.now() + 3600000,
           })
@@ -236,7 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("pendingEmail").value = email;
         }
         event.target.reset();
-        // When switching to email confirmation panel, also show the code beside it for 10 seconds
         setTimeout(() => {
           togglePanels("emailConfirm");
           showConfirmationCode(confirmationCode);
@@ -252,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   };
 
-  // Updated email confirmation handler to include avatar in registered user
+  // Updated email confirmation handler without avatar field
   const handleEmailConfirm = function (event) {
     event.preventDefault();
     const email = document.getElementById("pendingEmail").value;
@@ -268,8 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
         registeredUsers.push({
           username: pendingData.username,
           email: pendingData.email,
-          password: pendingData.password,
-          avatar: pendingData.avatar || "avatar1",
+          password: pendingData.password
         });
         localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
         localStorage.removeItem(`pendingRegistration_${email}`);
@@ -525,37 +521,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailConfirmForm = document.getElementById("emailConfirmForm");
   if (emailConfirmForm) emailConfirmForm.onsubmit = handleEmailConfirm;
 
-  // Avatar selection for registration (if any avatars exist)
-  const avatarOptions = document.querySelectorAll(".avatar-option");
-  if (avatarOptions.length > 0) {
-    avatarOptions.forEach((option) => {
-      option.addEventListener("click", function () {
-        avatarOptions.forEach((opt) => opt.classList.remove("selected"));
-        this.classList.add("selected");
-        const selectedAvatar = document.getElementById("selectedAvatar");
-        if (selectedAvatar) {
-          selectedAvatar.value = this.getAttribute("data-avatar");
-        }
-      });
-    });
+  // New global function to toggle password visibility in panels such as New Password
+  function togglePasswordVisibility(inputElem, icon) {
+    const type = inputElem.getAttribute("type") === "password" ? "text" : "password";
+    inputElem.setAttribute("type", type);
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
   }
 
-  // Carousel arrow functionality for avatar selection (if exists)
-  const leftArrow = document.querySelector(".avatar-arrow.left");
-  const rightArrow = document.querySelector(".avatar-arrow.right");
-  const avatarContainer = document.querySelector(".avatars");
-
-  if (leftArrow && rightArrow && avatarContainer) {
-    leftArrow.addEventListener("click", () => {
-      avatarContainer.scrollBy({ left: -100, behavior: "smooth" });
-    });
-    rightArrow.addEventListener("click", () => {
-      avatarContainer.scrollBy({ left: 100, behavior: "smooth" });
-    });
-  }
-
-  // Default to showing the register panel (which is now empty, but now displays "Site Em Manutenção")
-  togglePanels("register");
+  // Default to showing the login panel
+  togglePanels("login");
 });
 
 // Global function for correcting registration data when "Corrigir dados" is clicked
@@ -595,12 +570,4 @@ function showFonteMessage() {
     title: "Entre em contato",
     text: "Entre em contato com o Alves para ele passar os melhores preços do mercado.",
   });
-}
-
-// New global function to toggle password visibility in panels such as New Password
-function togglePasswordVisibility(inputElem, icon) {
-  const type = inputElem.getAttribute("type") === "password" ? "text" : "password";
-  inputElem.setAttribute("type", type);
-  icon.classList.toggle("fa-eye");
-  icon.classList.toggle("fa-eye-slash");
 }
